@@ -1,5 +1,6 @@
 package com.app_test;
 
+import android.R.string;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Criteria;
@@ -46,8 +47,10 @@ public class MainActivity extends Activity {
 		textLongitude = (TextView) findViewById(R.id.longi_str);
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+		/*for(String provider:locationManager.getAllProviders()) {
+			System.out.println("providers:"+provider);
+		}*/
 		findBestProvider(locationManager);
-		
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			Location location = locationManager
 					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -59,6 +62,17 @@ public class MainActivity extends Activity {
 			}
 			locationManager.requestLocationUpdates(
 					LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		} else {
+			Location location = locationManager
+					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			if (location != null) {
+				System.out.println("last net:" + location.getLatitude() + " , "
+						+ location.getLongitude());
+				textLatitude.setText("Latitude3:" + location.getLatitude());
+				textLongitude.setText("Longitude3:" + location.getLongitude());
+			}
+			locationManager.requestLocationUpdates(
+					LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		}
 	}
 
