@@ -30,7 +30,6 @@ public class MainActivity extends Activity {
 
 	private LocationListener locationListener = new LocationListener() {
 
-		// µ±×ø±ê¸Ä±äÊ±´¥·¢´Ëº¯Êı£¬Èç¹ûProvider´«½øÏàÍ¬µÄ×ø±ê£¬Ëü¾Í²»»á±»´¥·¢
 		public void onLocationChanged(Location location) {
 			if (location != null) {
 				textLatitude.setText("Latitude2:" + location.getLatitude());
@@ -39,15 +38,12 @@ public class MainActivity extends Activity {
 		}
 
 		public void onProviderDisabled(String provider) {
-			// Provider±»disableÊ±´¥·¢´Ëº¯Êı£¬±ÈÈçGPS±»¹Ø±Õ
 		}
 
 		public void onProviderEnabled(String provider) {
-			// Provider±»enableÊ±´¥·¢´Ëº¯Êı£¬±ÈÈçGPS±»´ò¿ª
 		}
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// ProviderµÄ×ªÌ¬ÔÚ¿ÉÓÃ¡¢ÔİÊ±²»¿ÉÓÃºÍÎŞ·şÎñÈı¸ö×´Ì¬Ö±½ÓÇĞ»»Ê±´¥·¢´Ëº¯Êı
 		}
 	};
 
@@ -94,11 +90,11 @@ public class MainActivity extends Activity {
 
 	private String findBestProvider(LocationManager locationManager) {
 		Criteria criteria = new Criteria();  
-	    criteria.setAccuracy(Criteria.ACCURACY_FINE);// ¸ß¾«¶È  
-	    criteria.setCostAllowed(false);// ÉèÖÃÔÊĞí²úÉú×Ê·Ñ  
-	    criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);// µÍ¹¦ºÄ  
+	    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+	    criteria.setCostAllowed(false);
+	    criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);//ä¸­æ–‡æ³¨é‡Šèƒ½çœ‹å—
 	
-	    String provider = locationManager.getBestProvider(criteria, true);// »ñÈ¡GPSĞÅÏ¢
+	    String provider = locationManager.getBestProvider(criteria, true);
 	    System.out.println("best provider is " + provider);
 	    return provider;
 	}
@@ -106,7 +102,7 @@ public class MainActivity extends Activity {
 	public void sendMessage(View view) throws Exception {
 		System.out.println("http requeset begin");
 		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost("http://10.100.152.47:8080/findUserTest");
+		HttpPost post = new HttpPost("http://192.168.1.104:8080/findUserTest");
 	    List<NameValuePair> parameters = new ArrayList<NameValuePair>();  
 	    parameters.add(new BasicNameValuePair("id", "-1"));  
 	    post.setEntity(new UrlEncodedFormEntity(parameters)); 
