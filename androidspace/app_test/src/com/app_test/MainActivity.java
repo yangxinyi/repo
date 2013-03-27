@@ -1,14 +1,26 @@
 package com.app_test;
 
-import android.R.string;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import android.app.Activity;
-import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -43,13 +55,13 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		textLatitude = (TextView) findViewById(R.id.lati_str);
+		/*textLatitude = (TextView) findViewById(R.id.lati_str);
 		textLongitude = (TextView) findViewById(R.id.longi_str);
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		/*for(String provider:locationManager.getAllProviders()) {
+		for(String provider:locationManager.getAllProviders()) {
 			System.out.println("providers:"+provider);
-		}*/
+		}
 		findBestProvider(locationManager);
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			Location location = locationManager
@@ -73,6 +85,10 @@ public class MainActivity extends Activity {
 			}
 			locationManager.requestLocationUpdates(
 					LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		}*/
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+		    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		    StrictMode.setThreadPolicy(policy);
 		}
 	}
 
@@ -85,6 +101,17 @@ public class MainActivity extends Activity {
 	    String provider = locationManager.getBestProvider(criteria, true);// 获取GPS信息
 	    System.out.println("best provider is " + provider);
 	    return provider;
+	}
+	
+	public void sendMessage(View view) throws Exception {
+		System.out.println("http requeset begin");
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost("http://10.100.152.47:8080/findUserTest");
+	    List<NameValuePair> parameters = new ArrayList<NameValuePair>();  
+	    parameters.add(new BasicNameValuePair("id", "-1"));  
+	    post.setEntity(new UrlEncodedFormEntity(parameters)); 
+	    HttpResponse response = client.execute(post);
+	    System.out.println("http_res:" + EntityUtils.toString(response.getEntity()));;
 	}
 	
 	@Override
